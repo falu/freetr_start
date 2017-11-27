@@ -16,22 +16,21 @@ datafilename = "freetr_start.data"
 
 url = baseurl + zipfilename
 
-print "letöltés: ", url
+print u"ellenőrzés: ", url
 
-
-print "fájlméret lekérdezése..."
+print u"fájlméret lekérdezése..."
 
 response = urllib.urlopen(url)
 
 if response.getcode() != 200:
-    print "nem található"
+    print u"nem található"
     exit(1)
 
 meta = response.info()
 
 size = meta.getheaders("Content-Length")[0]
 
-print "méret = ", size
+print u"méret = ", size
 
 
 # méret beolvasás fájlból
@@ -40,14 +39,14 @@ if os.path.isfile(datafilename):
     with open(datafilename, "r") as thefile:
         psize = thefile.read()
 
-print "tárolt méret = ", psize
+print u"tárolt méret = ", psize
 
 if size != psize:
     urllib.urlretrieve(url, zipfilename)
 
-    print "letöltve"
+    print u"letöltve"
 
-    print "kicsomagolás..."
+    print u"kicsomagolás..."
 
     zip_ref = zipfile.ZipFile(zipfilename, 'r')
     zip_ref.extractall('.')
@@ -61,22 +60,22 @@ if size != psize:
     os.remove(zipfilename)
 
 else:
-    print "nincs válzotás"
+    print u"nincs válzotás"
 
-print "indítás..."
+print u"indítás..."
 
 # létezik az exe fájl?
 if not os.path.isfile(exefilename):
-    print "nem találom a fájlt: ", exefilename
+    print u"nem találom a fájlt: ", exefilename
     exit(0)
 
 # paraméter lekérdezés
 arg = ""
 if len(sys.argv) > 1:
     arg = sys.argv[1]
-    print "arg = ", arg
+    print u"arg = ", arg
 
-print "platform = ", platform.system()
+print u"platform = ", platform.system()
 
 if platform.system() == 'Linux':
 
@@ -89,8 +88,8 @@ if platform.system() == 'Linux':
         subprocess.call(["wine", exefilename, arg])
         exit(0)
     else:
-        print "nincs telepítve a wine"
-        print "Ubuntu vagy Debian Linuxon használd a 'sudo apt install wine' parancsot"
+        print u"nincs telepítve a wine"
+        print u"Ubuntu vagy Debian Linuxon használd a 'sudo apt install wine' parancsot"
         exit(2)
 
 elif platform.system() == 'Windows':
@@ -98,5 +97,5 @@ elif platform.system() == 'Windows':
     exit(0)
 
 else:
-    print "nem támogatott operációs rendszer"
+    print u"nem támogatott operációs rendszer"
     exit(3)
